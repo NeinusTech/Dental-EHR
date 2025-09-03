@@ -15,7 +15,8 @@ import {
 } from "react-icons/fa";
 import { MdOutlineHome, MdOutlineLocationCity } from "react-icons/md";
 import { IKUpload, IKImage } from "imagekitio-react";
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 // ---------- Constants ----------
 const EMAIL_RE = /^\S+@\S+\.\S+$/;
 const MOBILE_RE = /^[6-9][0-9]{9}$/;
@@ -268,9 +269,7 @@ const PatientProfileForm = ({ initial = {}, onNext, onSave }) => {
     const e = {};
     if (!data.firstName) e.firstName = "First name is required";
     if (!data.lastName) e.lastName = "Last name is required";
-    if (!data.dob) {
-      e.dob = "Date of birth is required";
-    } else {
+    if (data.dob) {
       const d = new Date(data.dob);
       const now = new Date();
       if (Number.isNaN(d.getTime())) e.dob = "Enter a valid date";
@@ -341,7 +340,7 @@ const PatientProfileForm = ({ initial = {}, onNext, onSave }) => {
     setTouched({
       firstName: true,
       lastName: true,
-      dob: true,
+      dob: touched.dob || false,
       gender: true,
       phone: true,
       email: touched.email || false,
@@ -571,25 +570,28 @@ const PatientProfileForm = ({ initial = {}, onNext, onSave }) => {
         {/* DOB + Age + Gender */}
         <section className="grid gap-6 md:grid-cols-3">
           <div>
-            <Label htmlFor="dob" required>Date of Birth</Label>
+            <Label htmlFor="dob" >Date of Birth</Label>
+          
+
             <InputIconWrap icon={FaBirthdayCake}>
-              <input
-                id="dob"
-                name="dob"
-                type="date"
-                required
-                value={dob}
-                max={MAX_DOB}
-                min={MIN_DOB}
-                onChange={(e) => setDob(e.target.value)}
-                onBlur={() => setFieldTouched("dob")}
-                aria-invalid={!!(touched.dob && errors.dob)}
-                aria-describedby={touched.dob && errors.dob ? "dob-error" : undefined}
-                className={`mt-1 w-full rounded-lg border pl-10 pr-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
-                  touched.dob && errors.dob ? "border-red-500" : "border-gray-300"
-                }`}
-              />
-            </InputIconWrap>
+              <DatePicker
+                 name="dob"
+    id="dob"
+    selected={dob ? new Date(dob) : null}
+    onChange={(date) => setDob(date ? date.toISOString().split("T")[0] : "")}
+    onBlur={() => setFieldTouched("dob")}
+    maxDate={new Date()}
+    minDate={new Date(new Date().getFullYear() - 120, 0, 1)}
+    placeholderText="Select date of birth"
+    showMonthDropdown
+    showYearDropdown
+    dropdownMode="select"
+    className={`mt-1 w-full rounded-lg border pl-10 pr-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
+      touched.dob && errors.dob ? "border-red-500" : "border-gray-300"
+    }`}
+  />
+</InputIconWrap>
+
             <FieldError id="dob-error" msg={touched.dob ? errors.dob : ""} />
             <div className="mt-2 text-sm text-gray-600">
               Age:{" "}

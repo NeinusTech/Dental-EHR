@@ -407,8 +407,8 @@ const createPatient = async (req, res) => {
     }
     const p_visit = mapVisitRPC(visitSrc);
 
-    if (!p_patient.first_name || !p_patient.last_name || !p_patient.dob || !p_patient.gender || !p_patient.phone) {
-      return res.status(400).json({ error: 'Missing required patient fields (firstName, lastName, dob, gender, phone)' });
+    if (!p_patient.first_name || !p_patient.last_name || !p_patient.gender || !p_patient.phone) {
+      return res.status(400).json({ error: 'Missing required patient fields (firstName, lastName, gender, phone)' });
     }
     if (!p_visit.chief_complaint) {
       return res.status(400).json({ error: 'Missing chief complaint for initial visit' });

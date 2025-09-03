@@ -56,7 +56,7 @@ const Login = () => {
   useEffect(() => {
     (async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      if (session) navigate('/doctor');
+      if (session) navigate('/doctor/appointments');
     })();
   }, [navigate]);
 
@@ -117,7 +117,7 @@ const Login = () => {
         if (setErr) throw setErr;
       }
 
-      navigate('/doctor');
+      navigate('/doctor/appointments');
     } catch (error) {
       setMsg({ text: error.message || 'Login failed. Please try again.', type: 'error' });
       console.error('Login error:', error);

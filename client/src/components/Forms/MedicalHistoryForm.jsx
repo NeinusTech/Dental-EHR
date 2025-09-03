@@ -546,7 +546,7 @@ const MedicalHistoryForm = ({ patientId, initial = {}, onBack, onNext, onSave })
             <ToggleChip id="p3" label="Allergy" active={allergy} onClick={() => setAllergy((v) => !v)} />
             <ToggleChip
               id="p4"
-              label="Bleeding Tendency"
+              label="Bleeding Disorder"
               active={bleedingTendency}
               onClick={() => setBleedingTendency((v) => !v)}
             />

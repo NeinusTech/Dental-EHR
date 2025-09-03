@@ -301,7 +301,7 @@ const PatientDetail = () => {
     add(!!mh.artificial_valves_pacemaker, "Artificial Valves/Pacemakers");
     add(!!mh.asthma, "Asthma");
     add(!!mh.allergy, "Allergy");
-    add(!!mh.bleeding_tendency, "Bleeding Tendency");
+    add(!!mh.bleeding_tendency, "Bleeding Disorder");
     add(!!mh.epilepsy_seizure, "Epilepsy/Seizure");
     add(!!mh.heart_disease, "Heart Disease");
     add(!!mh.hyp_hypertension, "Hypertension/Hypotension");
@@ -1341,7 +1341,7 @@ const PatientDetail = () => {
                               ["artificialValvesPacemaker", "Artificial Valves/Pacemaker"],
                               ["asthma", "Asthma"],
                               ["allergy", "Allergy"],
-                              ["bleedingTendency", "Bleeding Tendency"],
+                              ["bleedingTendency", "Bleeding Disorder"],
                               ["epilepsySeizure", "Epilepsy/Seizure"],
                               ["heartDisease", "Heart Disease"],
                               ["hypHypertension", "Hypo/Hypertension"],

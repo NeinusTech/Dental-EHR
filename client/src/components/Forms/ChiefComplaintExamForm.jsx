@@ -8,13 +8,15 @@ const adultTeethNumbers = [8, 7, 6, 5, 4, 3, 2, 1, 1, 2, 3, 4, 5, 6, 7, 8];
 const childTeethLetters = ["E", "D", "C", "B", "A", "A", "B", "C", "D", "E"];
 const gradeOptions = ["A", "B", "C", "D", "E"];
 const statusOptions = [
-  "Intact",
+  "Impacted",
   "Caries",
-  "Filled",
+  "Filling",
   "Missing",
   "Crown",
   "Fractured",
   "Root Canal Treated",
+  "Root Stem",
+  "Implant"
 ];
 
 const getColorClass = (grade) => {
@@ -810,13 +812,13 @@ const ChiefComplaintExamForm = ({
         {/* Teeth Findings Grid */}
         {renderTeethGrid()}
 
-        {/* Diagnosis Notes */}
+        {/*  Diagnosis & Medicine Notes */}
         <div className="space-y-1">
           <label
             htmlFor="diag"
             className="block text-sm font-medium text-gray-700"
           >
-            Diagnosis Notes
+            Diagnosis & Medicine Notes
           </label>
           <textarea
             id="diag"

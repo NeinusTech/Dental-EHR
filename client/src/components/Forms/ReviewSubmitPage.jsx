@@ -280,7 +280,7 @@ const ReviewSubmitPage = ({ formData = {}, onEdit, onSubmit, onBack }) => {
     artificialValvesPacemaker: "Artificial Valves/Pacemakers",
     asthma: "Asthma",
     allergy: "Allergy",
-    bleedingTendency: "Bleeding Tendency",
+    bleedingTendency: "Bleeding Disorder",
     epilepsySeizure: "Epilepsy/Seizure",
     heartDisease: "Heart Disease",
     hypHypertension: "Hypertension/Hypotension",
@@ -373,7 +373,7 @@ const ReviewSubmitPage = ({ formData = {}, onEdit, onSubmit, onBack }) => {
         const patientPayload = {
           firstName: profile.firstName?.trim(),
           lastName: profile.lastName?.trim(),
-          dob: profile.dob || null,
+          dob: profile.dob || "",
           gender: profile.gender || "",
           phone: profile.phone || "",
           email: profile.email?.trim() || "",
@@ -473,7 +473,7 @@ const ReviewSubmitPage = ({ formData = {}, onEdit, onSubmit, onBack }) => {
   const printPage = () => {
     if (typeof window !== "undefined") window.print();
   };
-
+const [consentGiven, setConsentGiven] = useState(false);
   /* -----------------------------------------------------------------------
      UI
   -----------------------------------------------------------------------*/
@@ -728,8 +728,8 @@ const ReviewSubmitPage = ({ formData = {}, onEdit, onSubmit, onBack }) => {
             </div>
 
             <div>
-              <p className="text-sm text-gray-500">Diagnosis Notes</p>
-              <p className="font-medium">{examData.diagnosisNotes || "No diagnosis notes"}</p>
+              <p className="text-sm text-gray-500">Diagnosis & Medicine Notes</p>
+              <p className="font-medium">{examData.diagnosisNotes || "No diagnosis & Medicine notes"}</p>
             </div>
 
             <div>
@@ -933,6 +933,21 @@ const ReviewSubmitPage = ({ formData = {}, onEdit, onSubmit, onBack }) => {
                 {submitError}
               </div>
             )}
+{/* Patient Consent Checkbox */}
+<div className="no-print mt-4 mb-4 p-4 flex items-center rounded-lg border border-gray-300 bg-gray-100">
+  <input
+    type="checkbox"
+    id="patient-consent"
+    checked={consentGiven}
+    onChange={(e) => setConsentGiven(e.target.checked)}
+    className="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+  />
+  <label htmlFor="patient-consent" className="ml-2 text-sm text-gray-700">
+    I consent to submit my medical information for this patient record.
+              </label>
+              
+              
+</div>
 
             <div className="mt-6 flex justify-end gap-3">
               <button
@@ -946,9 +961,9 @@ const ReviewSubmitPage = ({ formData = {}, onEdit, onSubmit, onBack }) => {
               <button
                 type="button"
                 onClick={doSubmit}
-                disabled={submitting}
+                disabled={submitting || !consentGiven}
                 className={`rounded-lg px-4 py-2 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
-                  submitting ? "bg-indigo-400 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700"
+                  submitting || !consentGiven ? "bg-indigo-400 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700"
                 }`}
               >
                 {submitting ? (

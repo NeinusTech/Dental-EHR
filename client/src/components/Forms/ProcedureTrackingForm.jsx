@@ -1,6 +1,7 @@
 // src/components/ProcedureTrackingForm.jsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 /* =========================================================
    ProcedureTrackingForm (NO backend writes on this step)
    - Local draft autosave (localStorage)
@@ -248,6 +249,21 @@ const ProcedureTrackingForm = ({
       return copy;
     });
   };
+// Helper: format date as dd-MM-yyyy
+const formatDateDDMMYYYY = (date) => {
+  if (!date) return "";
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+};
+
+// Helper: parse dd-MM-yyyy to Date object
+const parseDDMMYYYY = (str) => {
+  if (!str) return null;
+  const [day, month, year] = str.split("-");
+  return new Date(year, month - 1, day);
+};
 
   return (
     <form
@@ -296,49 +312,53 @@ const ProcedureTrackingForm = ({
                 className="space-y-4 p-4 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 transition-colors"
               >
                 {/* Date Row */}
-                <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
-                  {/* Visit Date */}
-                  <div className="md:col-span-3">
-                    <label className="text-xs text-gray-500 block mb-1">Visit Date</label>
-                    <input
-                      ref={visitInputRef}
-                      type="date"
-                      value={row.visitDate}
-                      onChange={(e) => updateRow(idx, "visitDate", e.target.value)}
-                      className={`w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
-                        err.visitDate ? "border-red-500" : "border-gray-300"
-                      }`}
-                      aria-invalid={!!err.visitDate}
-                      aria-describedby={`visitDate-${idx}-err`}
-                    />
-                    {err.visitDate && (
-                      <p id={`visitDate-${idx}-err`} className="mt-1 text-xs text-red-600">
-                        {err.visitDate}
-                      </p>
-                    )}
-                  </div>
+               
+<div className="grid grid-cols-1 md:grid-cols-6 gap-4">
+  {/* Visit Date */}
+  <div className="md:col-span-3">
+    <label className="text-xs text-gray-500 block mb-1">Visit Date</label>
+    <DatePicker
+          selected={row.visitDate ? parseDDMMYYYY(row.visitDate) : null}
+          onChange={(date) =>
+            updateRow(idx, "visitDate", formatDateDDMMYYYY(date))
+          }
+          dateFormat="dd-MM-yyyy"
+          className={`w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
+            err.visitDate ? "border-red-500" : "border-gray-300"
+          }`}
+        />
+        {err.visitDate && (
+          <p id={`visitDate-${idx}-err`} className="mt-1 text-xs text-red-600">
+            {err.visitDate}
+          </p>
+        )}
 
-                  {/* Next Appointment */}
-                  <div className="md:col-span-3">
-                    <label className="text-xs text-gray-500 block mb-1">Next Appointment</label>
-                    <input
-                      type="date"
-                      value={row.nextApptDate}
-                      min={row.visitDate || undefined}
-                      onChange={(e) => updateRow(idx, "nextApptDate", e.target.value)}
-                      className={`w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
-                        err.nextApptDate ? "border-red-500" : "border-gray-300"
-                      }`}
-                      aria-invalid={!!err.nextApptDate}
-                      aria-describedby={`nextAppt-${idx}-err`}
-                    />
-                    {err.nextApptDate && (
-                      <p id={`nextAppt-${idx}-err`} className="mt-1 text-xs text-red-600">
-                        {err.nextApptDate}
-                      </p>
-                    )}
-                  </div>
-                </div>
+  </div>
+
+  {/* Next Appointment */}
+  <div className="md:col-span-3">
+    <label className="text-xs text-gray-500 block mb-1">Next Appointment</label>
+     <DatePicker
+          selected={row.nextApptDate ? parseDDMMYYYY(row.nextApptDate) : null}
+          minDate={row.visitDate ? parseDDMMYYYY(row.visitDate) : null}
+          onChange={(date) =>
+            updateRow(idx, "nextApptDate", formatDateDDMMYYYY(date))
+          }
+          dateFormat="dd-MM-yyyy"
+          className={`w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
+            err.nextApptDate ? "border-red-500" : "border-gray-300"
+          }`}
+        />
+        {err.nextApptDate && (
+          <p
+            id={`nextAppt-${idx}-err`}
+            className="mt-1 text-xs text-red-600"
+          >
+            {err.nextApptDate}
+          </p>
+        )}
+  </div>
+</div>
 
                 {/* Procedure */}
                 <div>
